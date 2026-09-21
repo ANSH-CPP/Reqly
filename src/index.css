@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+/* ---------- Base ---------- */
+@layer base {
+  body {
+    @apply min-h-screen bg-gray-50 text-gray-900 antialiased;
+  }
+}
+
+/* ---------- Reusable building blocks ----------
+   Small set of shared classes so every form field, button and
+   panel looks the same across the app. */
+@layer components {
+  .panel {
+    @apply overflow-hidden rounded-lg border border-gray-200 bg-white;
+  }
+
+  .section-title {
+    @apply text-sm font-semibold text-gray-900;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-sm font-medium text-gray-700;
+  }
+
+  .field-input {
+    @apply block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none;
+  }
+
+  .btn {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition focus-visible:ring-2 focus-visible:ring-blue-500/40 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+  }
+
+  .btn-secondary {
+    @apply border border-gray-300 bg-white text-gray-700 hover:bg-gray-50;
+  }
+
+  .btn-ghost {
+    @apply text-gray-500 hover:bg-gray-100 hover:text-gray-900;
+  }
+}

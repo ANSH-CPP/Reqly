@@ -1,0 +1,13 @@
+{
+  "name": "appwrite_function",
+  "version": "1.0.0",
+  "description": "API Checker Appwrite Function",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "node-appwrite": "^29.0.0"
+  }
+}
