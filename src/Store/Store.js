@@ -1,9 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import responseReducer from "./responseSlice";
-import historyReducer from "./historySlice"
-export const store = configureStore({
+import historyReducer from "./historySlice";
+import authReducer from "./authSlice";
+
+const store = configureStore({
     reducer: {
         response: responseReducer,
-        history: historyReducer
+        history: historyReducer,
+        auth: authReducer
     }
 });
+
+export default store;

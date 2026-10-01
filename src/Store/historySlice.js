@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import { clearHistory } from "../Appwrite/HistoryService";
 
 const initialState = {
-    history: []
+    history: [],
+    selectedRequest: null
 };
 
 const historySlice = createSlice({
@@ -11,27 +11,43 @@ const historySlice = createSlice({
     initialState,
 
     reducers: {
+
         addHistory: (state, action) => {
             state.history.push(action.payload);
         },
 
-        setHistory: (state,action) => {
-            state.history = action.payload
+        setHistory: (state, action) => {
+            state.history = action.payload;
         },
 
-        removeHistory: (state,action) => {
+        removeHistory: (state, action) => {
             state.history = state.history.filter(
                 (item) => item.$id !== action.payload
             );
         },
-        
+
         clearHistory: (state) => {
             state.history = [];
+        },
+
+        setSelectedRequest: (state, action) => {
+            state.selectedRequest = action.payload;
+        },
+
+        clearSelectedRequest: (state) => {
+            state.selectedRequest = null;
         }
 
     }
 });
 
-export const { addHistory, setHistory, removeHistory, clearHistory } = historySlice.actions;
+export const {
+    addHistory,
+    setHistory,
+    removeHistory,
+    clearHistory,
+    setSelectedRequest,
+    clearSelectedRequest
+} = historySlice.actions;
 
 export default historySlice.reducer;

@@ -1,4 +1,5 @@
 import { tablesDB } from "./Appwrite";
+import { Query } from "appwrite";
 
 const DATABASE_ID = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 const TABLE_ID = import.meta.env.VITE_APPWRITE_HISTORY_TABLE_ID;
@@ -28,14 +29,13 @@ export const getHistory = async (userId) => {
     try {
         const result = await tablesDB.listRows({
             databaseId: DATABASE_ID,
-            tableId: TABLE_ID
+            tableId: TABLE_ID,
+            queries: [
+                Query.equal("userId", userId)
+            ]
         });
 
-        const userHistory = result.rows.filter(
-            (row) => row.userId === userId
-        );
-
-        return userHistory;
+        return result.rows;
 
     } catch (error) {
         console.log("Get History Error:", error);
@@ -65,17 +65,20 @@ export const deleteHistory = async (rowId) => {
 // DELETE ALL USER HISTORY
 export const clearHistory = async (userId) => {
     try {
+
+        // Get only current user's rows
         const result = await tablesDB.listRows({
             databaseId: DATABASE_ID,
-            tableId: TABLE_ID
+            tableId: TABLE_ID,
+            queries: [
+                Query.equal("userId", userId)
+            ]
         });
 
-        const userRows = result.rows.filter(
-            (row) => row.userId === userId
-        );
 
+        // Delete user's rows
         await Promise.all(
-            userRows.map((row) =>
+            result.rows.map((row) =>
                 tablesDB.deleteRow({
                     databaseId: DATABASE_ID,
                     tableId: TABLE_ID,

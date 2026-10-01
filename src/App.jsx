@@ -1,25 +1,19 @@
-import { useState } from 'react'
+import { useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
-import Header from './Components/Header/Header'
-import MainInputBox from './Components/MainInputBox/MainInputBox'
-
-// import { sendApiRequest } from './Services/apiService'
+import Header from "./Components/Header/Header";
+import MainInputBox from "./Components/MainInputBox/MainInputBox";
 import { ResponsePanel } from "./Components/Response";
-function App() {
 
-    const [response, setResponse] = useState(null);
+import Login from "./Components/Login/Login";
+import Signup from "./Components/Signup/Signup";
 
-    async function handleApiRequest(data) {
+import { getCurrentUser } from "./Appwrite/AuthService";
+import { login } from "./Store/authSlice";
+import History from "./Components/History/History";
 
-        const result = await sendApiRequest(
-            data.URL,
-            data.method
-        );
-
-        console.log(result);
-
-        setResponse(result);
-    }
+function Home() {
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -28,21 +22,66 @@ function App() {
 
             <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
 
-                {/* Request on the left, response on the right (stacked on small screens) */}
                 <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-2">
 
-                    <MainInputBox
-                        onSubmit={handleApiRequest}
-                    />
+                    <MainInputBox />
 
-                    <ResponsePanel/>
+                    <ResponsePanel />
 
                 </div>
 
             </main>
 
         </div>
-    )
+    );
 }
 
-export default App
+
+function App() {
+
+    const dispatch = useDispatch();
+
+
+    useEffect(() => {
+
+        const checkUser = async () => {
+
+            const user = await getCurrentUser();
+
+            if (user) {
+
+                console.log("Existing session:", user);
+
+                dispatch(login(user));
+
+            }
+
+        };
+
+        checkUser();
+
+    }, [dispatch]);
+
+
+    return (
+
+        <Routes>
+
+            <Route path="/" element={<Home />} />
+
+            <Route path="/login" element={<Login />} />
+
+            <Route path="/signup" element={<Signup />} />
+
+            <Route
+                path="/History"
+                element={<History />}
+            />
+
+        </Routes>
+
+    );
+}
+
+
+export default App;
