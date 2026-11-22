@@ -20,11 +20,13 @@ const historySlice = createSlice({
             state.history = action.payload;
         },
 
-        removeHistory: (state, action) => {
-            state.history = state.history.filter(
-                (item) => item.$id !== action.payload
-            );
-        },
+        
+    removeHistory: (state, action) => {
+        state.history = state.history.filter(
+            (item) => String(item._id) !== String(action.payload)
+        );
+    },
+
 
         clearHistory: (state) => {
             state.history = [];

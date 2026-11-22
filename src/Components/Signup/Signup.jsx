@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createAccount } from "../../Appwrite/AuthService";
+// import { createAccount } from "../../Appwrite/AuthService";
+import api from "../../api/axios";
 
 function Signup() {
 
@@ -21,11 +22,34 @@ function Signup() {
 
         try {
 
-            await createAccount(
+
+
+
+
+            
+                        // APPWRITE
+            // await createAccount(
+            //     email,
+            //     password,
+            //     name
+            // );
+
+                        //BACKEND
+            await api.post("/users/register", {
+                username: name,
                 email,
-                password,
-                name
-            );
+                password
+            });
+
+
+
+
+
+
+
+
+
+
 
             // After successful signup
             navigate("/login");
@@ -35,7 +59,8 @@ function Signup() {
             console.error(error);
 
             setError(
-                error.message || "Signup failed"
+                // error.message || "Signup failed"
+                error.response?.data?.message || "Signup failed"
             );
 
         } finally {
