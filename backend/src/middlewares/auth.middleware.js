@@ -25,7 +25,11 @@ const verifyJWT = asyncHandler(async(req,res,next)=>{
         process.env.ACCESS_TOKEN_SECRET
             );
         } catch (error) {
-            throw new ApiError(401, "Access token expired");
+            if (error.name === "TokenExpiredError") {
+                throw new ApiError(401, "Access token expired");
+            }
+
+            throw new ApiError(401, "Invalid access token");
         }
 
     const user = await User.findById(decodedToken?._id).select("-password -refreshToken")

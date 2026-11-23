@@ -162,11 +162,29 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     }
 
     // 2. Verify refresh token
-    const decodedToken = jwt.verify(
+    // const decodedToken = jwt.verify(
+    //     incomingRefreshToken,
+    //     process.env.REFRESH_TOKEN_SECRET
+    // );
+
+    let decodedToken;
+
+try {
+    decodedToken = jwt.verify(
         incomingRefreshToken,
         process.env.REFRESH_TOKEN_SECRET
     );
+    } catch (error) {
+        if (error.name === "TokenExpiredError") {
+            throw new ApiError(401, "Refresh token expired. Please login again.");
+        }
 
+        throw new ApiError(401, "Invalid refresh token. Please login again.");
+    }
+
+
+
+    
     // 3. Find user from decoded token
     const user = await User.findById(decodedToken?._id);
 
